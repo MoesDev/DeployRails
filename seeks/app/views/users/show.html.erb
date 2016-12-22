@@ -1,0 +1,42 @@
+<a href="/sessions/destroy">LogOut</a>
+<h2>Show Page</h2>
+<h3><%= @user.name %></h3>
+
+<h4>New Secret</h4>
+<form action="/secrets/create" method="POST">
+	<input name="authenticity_token" value= "<%=form_authenticity_token %>" type="hidden">
+	<textarea name="secret" cols="18" rows="4"></textarea>
+	<p></p>
+	<input type="submit" value="Create Secret">
+	<p><%= flash[:errors] %></p>
+
+	<div id="showpg_bottom">
+		<div id="showpg_bottom_left">
+		<h4>Secrets</h4>
+
+		<% @my_secrets.each do |mys| %>
+
+			<p><%= mys.secret %> 
+				<% if mys.user_id == session[:user_id] %>
+				<a href="/secrets/<%= mys.id %>" data-method="delete">Delete</a>
+				<% end %>
+			</p>
+			<p><%= mys.likes.count %> likes</p>
+		<% end %>
+
+		</div>
+		
+		<div id="showpg_bottom_right">
+		<h4>Secrets Liked</h4>
+			<% @liked_secrets.each do |ls| %>
+
+				<p><%= ls.secret.secret %> 
+					<% if ls.secret.user_id == session[:user_id] %>
+					<a href="/secrets/<%= ls.secret.id %>" data-method="delete">Delete</a>
+					<% end %>
+				</p>
+				<p><%= ls.secret.likes.count %> likes</p>
+			<% end %>
+		</div>
+	</div>
+</form>
